@@ -1,1 +1,43 @@
 
+package JSON;
+
+public class Test1 {
+	<?php
+
+			// Check if form data has been submitted
+			if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'PUT' || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+
+			    // Get the raw data from the request body
+			    $data = file_get_contents('php://input');
+
+			    // Decode the data based on the request method
+			    switch ($_SERVER['REQUEST_METHOD']) {
+          
+			        case 'POST':
+			            $form_data = json_decode($data, true);
+			            break;
+			        case 'PUT':
+			            parse_str($data, $form_data);
+			            break;
+			        case 'DELETE':
+			            parse_str($data, $form_data);
+			            break;
+			        default:
+			            $form_data = [];
+			    }
+
+			    // Display the form data in a table
+			    echo "<table>";
+			    foreach ($form_data as $key => $value) {
+			        echo "<tr><td>{$key}</td><td>{$value}</td></tr>";
+			    }
+			    echo "</table>";
+
+			    // Encode the data as a JSON object for use in Javascript
+			    $json_data = json_encode($form_data);
+			    echo "<script>var formData = {$json_data};</script>";
+			}
+			?>
+
+
+}
